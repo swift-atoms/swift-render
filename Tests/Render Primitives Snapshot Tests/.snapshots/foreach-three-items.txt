@@ -1,0 +1,3 @@
+text("alpha")
+text("beta")
+text("gamma")

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://swift-institute.org/schemas/research-index-v1.json",
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-04-18",
+  "title": "Research Index",
+  "blurb": "",
+  "scope": "swift-rendering-primitives (swift-primitives)",
+  "documents": [
+    {
+      "file": "existential-dispatch-under-strict-concurrency.md",
+      "displayName": "existential-dispatch-under-strict-concurrency",
+      "topic": "Existential opening under NonisolatedNonsendingByDefault",
+      "date": "2026-03-02",
+      "status": "DECISION",
+      "statusDetail": null,
+      "statusRaw": "DECISION",
+      "tier": null,
+      "scope": null
+    },
+    {
+      "file": "unified-rendering-context-architecture.md",
+      "displayName": "unified-rendering-context-architecture",
+      "topic": "Multi-format rendering via generic Rendering.Context",
+      "date": "2026-03-12",
+      "status": "IN_PROGRESS",
+      "statusDetail": null,
+      "statusRaw": "IN_PROGRESS",
+      "tier": null,
+      "scope": null
+    },
+    {
+      "file": "cooperative-pool-stack-overflow.md",
+      "displayName": "cooperative-pool-stack-overflow",
+      "topic": "Static-dispatch rendering overflows 544 KB cooperative pool stack; thread stackSize infrastructure",
+      "date": "2026-03-17",
+      "status": "IN_PROGRESS",
+      "statusDetail": null,
+      "statusRaw": "IN_PROGRESS",
+      "tier": null,
+      "scope": null
+    },
+    {
+      "file": "prior-art-view-tree-materialization.md",
+      "displayName": "prior-art-view-tree-materialization",
+      "topic": "How OpenSwiftUI and Elementary store/traverse composed children; validation of boxing (Option C) and ~Escapable closures (Option E)",
+      "date": "2026-03-18",
+      "status": "DECISION",
+      "statusDetail": null,
+      "statusRaw": "DECISION",
+      "tier": null,
+      "scope": null
+    },
+    {
+      "file": "css-modifier-chain-flattening.md",
+      "displayName": "css-modifier-chain-flattening",
+      "topic": "Whether CSS modifier nesting (Styled<Styled<...>>) should be flattened to reduce stack frames; subsumed by Option F",
+      "date": "2026-03-18",
+      "status": "RECOMMENDATION",
+      "statusDetail": null,
+      "statusRaw": "RECOMMENDATION",
+      "tier": null,
+      "scope": null
+    },
+    {
+      "file": "owned-body-accessor-for-noncopyable.md",
+      "displayName": "owned-body-accessor-for-noncopyable",
+      "topic": "~Copyable body support: store VIEW (Self: Copyable) not BODY; body flows as transient borrow. @_owned deferred to future toolchain",
+      "date": "2026-03-18",
+      "status": "DECISION",
+      "statusDetail": null,
+      "statusRaw": "DECISION",
+      "tier": null,
+      "scope": null
+    }
+  ]
+}

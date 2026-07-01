@@ -1,103 +1,82 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3.1
 
 import PackageDescription
 
-extension String {
-    static let rendering: Self = "Rendering"
-    static let renderingAsync: Self = "RenderingAsync"
-    static let renderingTestSupport: Self = "Rendering TestSupport"
-}
-
-extension Target.Dependency {
-    static var rendering: Self { .target(name: .rendering) }
-    static var renderingAsync: Self { .target(name: .renderingAsync) }
-    static var renderingTestSupport: Self { .target(name: .renderingTestSupport) }
-}
-
-extension Target.Dependency {
-    static var inlineSnapshotTesting: Self {
-        .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing")
-    }
-    static var asyncAlgorithms: Self {
-        .product(name: "AsyncAlgorithms", package: "swift-async-algorithms-fork")
-    }
-    static var testingPerformance: Self {
-        .product(name: "TestingPerformance", package: "swift-testing-performance")
-    }
-}
-
 let package = Package(
-    name: "swift-renderable",
+    name: "swift-render-primitives",
     platforms: [
         .macOS(.v26),
         .iOS(.v26),
         .tvOS(.v26),
         .watchOS(.v26),
-        .visionOS(.v26),
+        .visionOS(.v26)
     ],
     products: [
-        .library(name: .rendering, targets: [.rendering]),
-        .library(name: .renderingAsync, targets: [.renderingAsync]),
-        .library(name: .renderingTestSupport, targets: [.renderingTestSupport]),
+        // MARK: - Namespace
+        .library(
+            name: "Render Primitive",
+            targets: ["Render Primitive"]
+        ),
+        // MARK: - Umbrella
+        .library(
+            name: "Render Primitives",
+            targets: ["Render Primitives"]
+        ),
+        .library(
+            name: "Render Primitives Test Support",
+            targets: ["Render Primitives Test Support"]
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/coenttb/swift-async-algorithms-fork.git", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.3"),
-        .package(url: "https://github.com/coenttb/swift-testing-performance", from: "0.1.0"),
     ],
     targets: [
+        // MARK: - Namespace
         .target(
-            name: .rendering,
+            name: "Render Primitive",
+            dependencies: []
+        ),
+
+        // MARK: - Umbrella
+        .target(
+            name: "Render Primitives",
             dependencies: [
-                .product(name: "OrderedCollections", package: "swift-collections"),
+                "Render Primitive",
             ]
         ),
         .target(
-            name: .renderingAsync,
+            name: "Render Primitives Test Support",
             dependencies: [
-                .rendering,
-                .asyncAlgorithms,
-            ]
-        ),
-        .target(
-            name: .renderingTestSupport,
-            dependencies: [
-                .rendering,
-                .renderingAsync,
-                .inlineSnapshotTesting,
-                .testingPerformance,
-            ]
+                "Render Primitives",
+            ],
+            path: "Tests/Support"
         ),
         .testTarget(
-            name: .rendering.tests,
+            name: "Render Primitives Tests",
             dependencies: [
-                .rendering,
-                .renderingTestSupport,
-            ]
-        ),
-        .testTarget(
-            name: .renderingAsync.tests,
-            dependencies: [
-                .rendering,
-                .renderingAsync,
-                .renderingTestSupport,
-            ]
-        ),
+                "Render Primitives",
+                "Render Primitives Test Support",
+            ],
+            path: "Tests/Render Primitives Tests"
+        )
     ],
     swiftLanguageModes: [.v6]
 )
 
-extension String {
-    var tests: Self { self + " Tests" }
-}
+for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
+    let ecosystem: [SwiftSetting] = [
+        .strictMemorySafety(),
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("InternalImportsByDefault"),
+        .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+        .enableExperimentalFeature("LifetimeDependence"),
+        .enableExperimentalFeature("Lifetimes"),
+        .enableExperimentalFeature("SuppressedAssociatedTypes"),
+        .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableUpcomingFeature("LifetimeDependence"),
+    ]
 
-for target in package.targets where ![.system, .binary, .plugin].contains(target.type) {
-    let existing = target.swiftSettings ?? []
-    target.swiftSettings =
-        existing + [
-            .enableUpcomingFeature("ExistentialAny"),
-            .enableUpcomingFeature("InternalImportsByDefault"),
-            .enableUpcomingFeature("MemberImportsByDefault"),
-        ]
+    let package: [SwiftSetting] = []
+
+    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

@@ -1,35 +1,35 @@
 {
   "version": 1,
-  "lineLength": 100,
+  "lineLength": 200,
   "indentation": {
     "spaces": 4
   },
-  "tabWidth": 8,
   "maximumBlankLines": 1,
   "respectsExistingLineBreaks": true,
   "lineBreakBeforeControlFlowKeywords": false,
   "lineBreakBeforeEachArgument": true,
-  "lineBreakBeforeEachGenericRequirement": false,
+  "lineBreakBeforeEachGenericRequirement": true,
   "prioritizeKeepingFunctionOutputTogether": true,
   "indentConditionalCompilationBlocks": true,
-  "lineBreakAroundMultilineExpressionChainComponents": false,
+  "indentSwitchCaseLabels": false,
+  "spacesAroundRangeFormationOperators": false,
   "fileScopedDeclarationPrivacy": {
     "accessLevel": "private"
   },
   "rules": {
-    "AllPublicDeclarationsHaveDocumentation": false,
+    "AllPublicDeclarationsHaveDocumentation": true,
     "AlwaysUseLowerCamelCase": false,
     "AmbiguousTrailingClosureOverload": true,
-    "BeginDocumentationCommentWithOneLineSummary": false,
+    "BeginDocumentationCommentWithOneLineSummary": true,
     "DoNotUseSemicolons": true,
     "DontRepeatTypeInStaticProperties": true,
     "FileScopedDeclarationPrivacy": true,
     "FullyIndirectEnum": true,
     "GroupNumericLiterals": true,
     "IdentifiersMustBeASCII": true,
-    "NeverForceUnwrap": false,
-    "NeverUseForceTry": false,
-    "NeverUseImplicitlyUnwrappedOptionals": false,
+    "NeverForceUnwrap": true,
+    "NeverUseForceTry": true,
+    "NeverUseImplicitlyUnwrappedOptionals": true,
     "NoAccessLevelOnExtensionDeclaration": true,
     "NoBlockComments": true,
     "NoCasesWithOnlyFallthrough": true,
@@ -43,12 +43,13 @@
     "OnlyOneTrailingClosureArgument": true,
     "OrderedImports": true,
     "ReturnVoidInsteadOfEmptyTuple": true,
+    "UseEarlyExits": true,
     "UseLetInEveryBoundCaseVariable": true,
     "UseShorthandTypeNames": true,
     "UseSingleLinePropertyGetter": true,
-    "UseSynthesizedInitializer": true,
+    "UseSynthesizedInitializer": false,
     "UseTripleSlashForDocumentationComments": true,
     "UseWhereClausesInForLoops": false,
-    "ValidateDocumentationComments": false
+    "ValidateDocumentationComments": true
   }
 }
