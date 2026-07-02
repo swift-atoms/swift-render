@@ -1,6 +1,6 @@
 # .github/metadata.yaml
 # Triaged by AI-assisted bulk pass (2026-04-29).
-description: "Render types for Swift."
+description: "Format-independent declarative view trees driven by a witness-struct render context, with no backend protocol to conform to, for Swift."
 topics:
   - primitives
   - render
