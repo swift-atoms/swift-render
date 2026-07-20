@@ -175,6 +175,73 @@ extension CompositionTests.EdgeCase {
         let events = render(view)
         #expect(events == [.text("bottom")])
     }
+
+    // MARK: F-001: Pair with a bracketed (multi-item-deferring) child in
+    // each position, in isolation — narrows down which position the
+    // old synchronous-dispatch/reverse hybrid mis-ordered.
+
+    @Test
+    func `Pair with bracketed child in first position closes before second renders`() {
+        let view = Render.Pair(
+            first: BlockWrapper(role: .blockquote) { TextLeaf("quote") },
+            second: TextLeaf("plain")
+        )
+        let events = render(view)
+        #expect(
+            events == [
+                .pushBlock(role: .blockquote, style: .empty),
+                .text("quote"),
+                .popBlock,
+                .text("plain"),
+            ]
+        )
+    }
+
+    @Test
+    func `Pair with bracketed child in second position closes after opening`() {
+        let view = Render.Pair(
+            first: TextLeaf("plain"),
+            second: BlockWrapper(role: .blockquote) { TextLeaf("quote") }
+        )
+        let events = render(view)
+        #expect(
+            events == [
+                .text("plain"),
+                .pushBlock(role: .blockquote, style: .empty),
+                .text("quote"),
+                .popBlock,
+            ]
+        )
+    }
+
+    @Test
+    func `nested Pair with bracketed grandchildren preserves sibling structure`() {
+        // A Pair whose first child is itself a Pair of two bracketed views:
+        // exercises the double-reversal failure mode directly, since the
+        // inner Pair's own (now correctly ordered) two-item block must not
+        // be re-scrambled by the outer Pair.
+        let view = Render.Pair(
+            first: Render.Pair(
+                first: BlockWrapper(role: .heading(level: 1)) { TextLeaf("title") },
+                second: BlockWrapper(role: .paragraph) { TextLeaf("intro") }
+            ),
+            second: BlockWrapper(role: .blockquote) { TextLeaf("quote") }
+        )
+        let events = render(view)
+        #expect(
+            events == [
+                .pushBlock(role: .heading(level: 1), style: .empty),
+                .text("title"),
+                .popBlock,
+                .pushBlock(role: .paragraph, style: .empty),
+                .text("intro"),
+                .popBlock,
+                .pushBlock(role: .blockquote, style: .empty),
+                .text("quote"),
+                .popBlock,
+            ]
+        )
+    }
 }
 
 // MARK: - Integration
@@ -214,11 +281,18 @@ extension CompositionTests.Integration {
 
     @Test
     func `Pair with block wrappers preserves structure`() {
-        // Pair with push/pop views uses _Tuple in practice (via @Builder).
-        // Test with _Tuple which correctly defers all children.
-        let view = Render._Tuple(
-            BlockWrapper(role: .paragraph) { TextLeaf("p1") },
-            BlockWrapper(role: .paragraph) { TextLeaf("p2") }
+        // F-001 regression: Pair._render used to dispatch both children
+        // synchronously and then reverse the *combined* range of whatever
+        // they deferred, which is only correct when each child defers
+        // exactly one item. A BlockWrapper defers its close (`popBlock`)
+        // while opening synchronously, so the old algorithm interleaved
+        // both opens before either close, producing
+        // [pushBlock, text, pushBlock, text, popBlock, popBlock] (blockquote
+        // and paragraph rendered as nested, not sibling, blocks) instead of
+        // the correct sibling order asserted below.
+        let view = Render.Pair(
+            first: BlockWrapper(role: .paragraph) { TextLeaf("p1") },
+            second: BlockWrapper(role: .paragraph) { TextLeaf("p2") }
         )
         let events = render(view)
         #expect(

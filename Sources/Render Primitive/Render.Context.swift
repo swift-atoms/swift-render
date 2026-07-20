@@ -198,7 +198,21 @@ extension Render.Context {
         _stack.reserveCapacity(64)
         defer { _cleanupStack() }
         V._render(view, context: &self)
-        while let work = _stack.popLast() {
+        _drain(above: 0)
+    }
+
+    /// Pops and dispatches work above `marker`, in LIFO order, until the
+    /// stack returns to that depth.
+    ///
+    /// This is the same step the top-level `render(_:)` drain loop performs;
+    /// it is also used by composition types (``Render/Pair``) that need one
+    /// child's entire deferred subtree to fully complete — synchronous
+    /// dispatch *and* whatever it deferred — before the next child begins,
+    /// without needing ownership of that child beyond its own `_render` call.
+    @usableFromInline
+    mutating func _drain(above marker: Int) {
+        while _stack.count > marker {
+            let work = _stack.removeLast()
             switch work {
             case .render(let pointer, let thunk):
                 unsafe thunk.dispatch(pointer, &self)
