@@ -23,7 +23,8 @@ extension Render {
     ///
     /// `Render.Indirect` holds an immutable `let value: Content`.
     /// `~Copyable` generic in class storage blocks structural Sendable inference.
-    /// The value is immutable after construction — no shared mutation risk.
+    /// The value is immutable after construction — no shared mutation risk
+    /// *when `Content` is itself `Sendable`* — see ``Non-Goals``.
     ///
     /// ## Intended Use
     ///
@@ -32,7 +33,14 @@ extension Render {
     /// ## Non-Goals
     ///
     /// - Does not support mutation after construction.
-    public final class Indirect<Content: ~Copyable>: @unsafe @unchecked Sendable {
+    /// - `Indirect<Content>` is **not** `Sendable` when `Content` is not
+    ///   `Sendable`. The conformance below is conditional precisely so that
+    ///   wrapping a non-`Sendable` (e.g. mutable-reference-holding) value in
+    ///   `Indirect` cannot be used to smuggle it across an isolation boundary.
+    ///   An unconditional `@unchecked Sendable` here would defeat the
+    ///   compiler's data-race checking for every `Content` type, checked or
+    ///   not — that was the bug this conditional conformance fixes.
+    public final class Indirect<Content: ~Copyable> {
         /// The heap-stored content value, immutable after construction.
         public let value: Content
 
@@ -41,3 +49,7 @@ extension Render {
         public init(_ value: consuming Content) { self.value = value }
     }
 }
+
+// MARK: - Sendable
+
+extension Render.Indirect: @unsafe @unchecked Sendable where Content: Sendable & ~Copyable {}
