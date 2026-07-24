@@ -325,11 +325,11 @@ path, so the property cannot silently regress again.
 ### R5 — Build and verification order
 
 All builds through the coordinator. Verified present and executable:
-`/Users/coen/Developer/swift-institute/Scripts/swift-build` (`package build|test|resolve`,
+`<workspace>/swift-institute/Scripts/swift-build` (`package build|test|resolve`,
 `workspace`, `impact`, `status`).
 
 ```bash
-/Users/coen/Developer/swift-institute/Scripts/swift-build package test --package-path /Users/coen/Developer/swift-primitives/swift-render-primitives
+<workspace>/swift-institute/Scripts/swift-build package test --package-path <workspace>/swift-primitives/swift-render-primitives
 ```
 
 Dependency order (verified from manifests):
