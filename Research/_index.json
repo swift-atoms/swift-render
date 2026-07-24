@@ -71,6 +71,14 @@
       "statusRaw": "DECISION",
       "tier": null,
       "scope": null
+    },
+    {
+      "file": "stage-a-execution-brief.md",
+      "displayName": "Stage A Execution Brief — Render Domain Split",
+      "topic": "RECOMMENDATION (2026-07-24): Dispatch brief preparing execution of the Stage A refactor decided in swift-institute/Research/render-machine-dissolution.md. Read-only reconnaissance only — nothing executed. Carries the file-to-target assignment for all 29 Render Primitive files, the 202-site consumer call-site census across 5 packages (swift-svg-render and swift-render-async-primitives measured at ZERO moving-symbol references), the characterization-test gap (exact-once destruction and arbitrary-depth stack safety have NO existing coverage and must be written before any code moves), the precise Embedded blocker surface (swift-html-render has exactly two, both mechanical; the Any inline-style channel's cost hinges on an unanswered scope question about whether swift-pdf-html-render's Mirror-based CSS dispatch is inside the Embedded surface), the coordinator build order, an 8-step gated execution order, and explicit out-of-scope fences against the Machine redesign, checkpoint abstraction, erased-ownership work, and Effect integration.",
+      "status": "RECOMMENDATION",
+      "tier": 1,
+      "scope": null
     }
   ]
 }
