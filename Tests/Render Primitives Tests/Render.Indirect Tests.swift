@@ -5,7 +5,9 @@ import Testing
 // MARK: - Fixtures
 
 /// A reference type with genuinely mutable, shared state — deliberately
-/// **not** `Sendable`. Used to prove `Render.Indirect` does not launder
+/// **not** `Sendable`.
+///
+/// Used to prove `Render.Indirect` does not launder
 /// non-`Sendable` content into a false `Sendable` conformance (F-003).
 private final class MutableBox {
     var value: Int = 0
@@ -39,8 +41,8 @@ extension Tests.Unit {
 extension Tests.`Edge Case` {
     /// F-003 regression: before the fix, `Render.Indirect` was
     /// unconditionally `@unchecked Sendable` regardless of `Content`, so
-    /// wrapping a non-`Sendable` type (e.g. `MutableBox`, above) and passing
-    /// it into a `Sendable`-constrained context compiled with **no
+    /// wrapping a non-`Sendable` type (for example `MutableBox`, above) and
+    /// passing it into a `Sendable`-constrained context compiled with **no
     /// diagnostic** — silently defeating the compiler's data-race checking.
     ///
     /// `Sendable` is a marker protocol erased at compile time: Swift has no
