@@ -43,7 +43,9 @@ extension Render {
         @usableFromInline var _setAttribute: (_ name: String, _ value: String?) -> Void
         @usableFromInline var _addClass: (String) -> Void
         @usableFromInline var _writeRaw: ([UInt8]) -> Void
-        @usableFromInline var _registerStyle: (_ declaration: String, _ atRule: String?, _ selector: String?, _ pseudo: String?) -> String?
+        @usableFromInline var _registerStyle:
+            (_ declaration: String, _ atRule: String?, _ selector: String?, _ pseudo: String?) ->
+                String?
         @usableFromInline var _applyInlineStyle: (Any) -> Bool
 
         // MARK: - Bulk Operations
@@ -63,7 +65,10 @@ extension Render {
             setAttribute: @escaping (_ name: String, _ value: String?) -> Void = { _, _ in },
             addClass: @escaping (String) -> Void = { _ in },
             writeRaw: @escaping ([UInt8]) -> Void = { _ in },
-            registerStyle: @escaping (_ declaration: String, _ atRule: String?, _ selector: String?, _ pseudo: String?) -> String? = { _, _, _, _ in nil },
+            registerStyle:
+                @escaping (
+                    _ declaration: String, _ atRule: String?, _ selector: String?, _ pseudo: String?
+                ) -> String? = { _, _, _, _ in nil },
             applyInlineStyle: @escaping (Any) -> Bool = { _ in false },
             speculative: Render.Speculative = .init(),
             spliceActions: @escaping ([Render.Action]) -> Void = { _ in }
@@ -163,7 +168,12 @@ extension Render.Context {
             case .attributes: self.push.attributes()
 
             case .element(let tagName, let isBlock, let isVoid, let isPreElement):
-                self.push.element(tagName: tagName, block: isBlock, void: isVoid, preformatted: isPreElement)
+                self.push.element(
+                    tagName: tagName,
+                    block: isBlock,
+                    void: isVoid,
+                    preformatted: isPreElement
+                )
 
             case .style: self.push.style()
             }
