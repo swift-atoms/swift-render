@@ -214,7 +214,11 @@ extension ContextTests.Unit {
         var ctx = Render.Context.recording(into: state)
         let result = ctx.register(style: "color: red", atRule: nil, selector: nil, pseudo: nil)
         #expect(result == nil)
-        #expect(state.events == [.registerStyle(declaration: "color: red", atRule: nil, selector: nil, pseudo: nil)])
+        #expect(
+            state.events == [
+                .registerStyle(declaration: "color: red", atRule: nil, selector: nil, pseudo: nil)
+            ]
+        )
     }
 }
 
@@ -499,7 +503,9 @@ extension ContextTests.Interpret {
     func `interpret push and pop element`() {
         let state = Render.Recording.State()
         var ctx = Render.Context.recording(into: state)
-        ctx.interpret(.push(.element(tagName: "div", isBlock: true, isVoid: false, isPreElement: false)))
+        ctx.interpret(
+            .push(.element(tagName: "div", isBlock: true, isVoid: false, isPreElement: false))
+        )
         ctx.interpret(.pop(.element(isBlock: true)))
         #expect(
             state.events == [

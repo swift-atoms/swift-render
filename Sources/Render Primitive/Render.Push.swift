@@ -5,13 +5,16 @@ extension Render {
     ///     ctx.push.inline(role: .strong, style: .empty)
     ///     ctx.push.link("https://example.com")
     public struct Push {
-        @usableFromInline var _block: (_ role: Render.Semantic.Block?, _ style: Render.Style) -> Void
-        @usableFromInline var _inline: (_ role: Render.Semantic.Inline?, _ style: Render.Style) -> Void
+        @usableFromInline var _block:
+            (_ role: Render.Semantic.Block?, _ style: Render.Style) -> Void
+        @usableFromInline var _inline:
+            (_ role: Render.Semantic.Inline?, _ style: Render.Style) -> Void
         @usableFromInline var _list: (_ kind: Render.Semantic.List, _ start: Int?) -> Void
         @usableFromInline var _item: () -> Void
         @usableFromInline var _link: (_ destination: String) -> Void
         @usableFromInline var _attributes: () -> Void
-        @usableFromInline var _element: (_ tagName: String, _ isBlock: Bool, _ isVoid: Bool, _ isPreElement: Bool) -> Void
+        @usableFromInline var _element:
+            (_ tagName: String, _ isBlock: Bool, _ isVoid: Bool, _ isPreElement: Bool) -> Void
         @usableFromInline var _style: () -> Void
 
         /// Creates a push handler from one closure per structured open operation.
@@ -23,7 +26,9 @@ extension Render {
             item: @escaping () -> Void,
             link: @escaping (_ destination: String) -> Void,
             attributes: @escaping () -> Void = {},
-            element: @escaping (_ tagName: String, _ isBlock: Bool, _ isVoid: Bool, _ isPreElement: Bool) -> Void = { _, _, _, _ in },
+            element:
+                @escaping (_ tagName: String, _ isBlock: Bool, _ isVoid: Bool, _ isPreElement: Bool)
+                -> Void = { _, _, _, _ in },
             style: @escaping () -> Void = {}
         ) {
             self._block = block
@@ -37,10 +42,14 @@ extension Render {
         }
 
         /// Opens a block-level container with an optional semantic role and style.
-        @inlinable public func block(role: Render.Semantic.Block?, style: Render.Style) { _block(role, style) }
+        @inlinable public func block(role: Render.Semantic.Block?, style: Render.Style) {
+            _block(role, style)
+        }
 
         /// Opens an inline-level container with an optional semantic role and style.
-        @inlinable public func inline(role: Render.Semantic.Inline?, style: Render.Style) { _inline(role, style) }
+        @inlinable public func inline(role: Render.Semantic.Inline?, style: Render.Style) {
+            _inline(role, style)
+        }
 
         /// Opens a list of the given kind, optionally starting at a specific number.
         @inlinable public func list(kind: Render.Semantic.List, start: Int?) { _list(kind, start) }
@@ -55,7 +64,12 @@ extension Render {
         @inlinable public func attributes() { _attributes() }
 
         /// Opens a raw element by tag name, with block, void, and preformatted flags.
-        @inlinable public func element(tagName: String, block isBlock: Bool, void isVoid: Bool, preformatted: Bool) { _element(tagName, isBlock, isVoid, preformatted) }
+        @inlinable public func element(
+            tagName: String,
+            block isBlock: Bool,
+            void isVoid: Bool,
+            preformatted: Bool
+        ) { _element(tagName, isBlock, isVoid, preformatted) }
 
         /// Opens a style scope.
         @inlinable public func style() { _style() }

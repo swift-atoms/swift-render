@@ -28,7 +28,9 @@ where First: Render.View & ~Copyable, Second: Render.View & ~Copyable {
     public typealias Body = Never
 
     /// Unreachable: both elements are dispatched directly through `_render`.
-    public var body: Never { fatalError("Render.Pair has no body; rendering is performed by _render") }
+    public var body: Never {
+        fatalError("Render.Pair has no body; rendering is performed by _render")
+    }
 
     /// Renders the first element followed by the second, in source order.
     ///

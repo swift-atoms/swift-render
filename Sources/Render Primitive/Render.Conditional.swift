@@ -17,7 +17,9 @@ where First: Render.View & ~Copyable, Second: Render.View & ~Copyable {
     public typealias Body = Never
 
     /// Unreachable: the chosen branch is dispatched directly through `_render`.
-    public var body: Never { fatalError("Render.Conditional has no body; rendering is performed by _render") }
+    public var body: Never {
+        fatalError("Render.Conditional has no body; rendering is performed by _render")
+    }
 
     /// Renders whichever branch the conditional currently holds.
     public static func _render(
@@ -32,4 +34,5 @@ where First: Render.View & ~Copyable, Second: Render.View & ~Copyable {
 }
 
 extension Render.Conditional: Copyable where First: Copyable, Second: Copyable {}
-extension Render.Conditional: Sendable where First: Sendable & Copyable, Second: Sendable & Copyable {}
+extension Render.Conditional: Sendable
+where First: Sendable & Copyable, Second: Sendable & Copyable {}

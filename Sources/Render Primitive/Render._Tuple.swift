@@ -25,7 +25,9 @@ extension Render._Tuple: Render.View where repeat each Content: Render.View {
     public typealias Body = Never
 
     /// Unreachable: each element is dispatched directly through `_render`.
-    public var body: Never { fatalError("Render._Tuple has no body; rendering is performed by _render") }
+    public var body: Never {
+        fatalError("Render._Tuple has no body; rendering is performed by _render")
+    }
 
     /// Renders each packed element in order.
     public static func _render(
