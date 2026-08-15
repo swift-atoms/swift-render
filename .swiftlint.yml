@@ -1,8 +1,0 @@
-# SwiftLint configuration
-# Inherits from the shared parent configuration in swift-standards
-
-parent_config: https://raw.githubusercontent.com/swift-primitives/.github/main/.swiftlint.yml
-
-# Package-specific overrides
-disabled_rules:
-  - function_parameter_count
