@@ -1,3 +1,0 @@
-push.block(role: .heading(1), style: Style(fontSize: 24.0, fontWeight: .bold, color: .blue, margin: 16.0))
-text("Main Title")
-pop.block

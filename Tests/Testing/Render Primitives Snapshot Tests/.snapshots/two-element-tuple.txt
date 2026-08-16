@@ -1,2 +1,0 @@
-text("first")
-text("second")
