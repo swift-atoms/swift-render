@@ -1,8 +1,0 @@
-push.block(role: .section, style: .empty)
-push.block(role: .paragraph, style: .empty)
-push.inline(role: .strong, style: .empty)
-text("bold text")
-pop.inline
-text(" and normal")
-pop.block
-pop.block

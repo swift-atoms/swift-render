@@ -120,13 +120,23 @@ struct SnapshotTests {
     @Test
     func `empty view event trace`() {
         let events = render(Render.Empty())
-        snapshot(as: makeEventsStrategy(), named: "empty-view") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            ""
+        }
     }
 
     @Test
     func `single text leaf event trace`() {
         let events = render(TextLeaf("Hello, world!"))
-        snapshot(as: makeEventsStrategy(), named: "single-text-leaf") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            text("Hello, world!")
+            """
+        }
     }
 
     @Test
@@ -135,7 +145,15 @@ struct SnapshotTests {
             TextLeaf("A paragraph of text.")
         }
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "paragraph-block") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            push.block(role: .paragraph, style: .empty)
+            text("A paragraph of text.")
+            pop.block
+            """
+        }
     }
 
     @Test
@@ -149,49 +167,94 @@ struct SnapshotTests {
             TextLeaf("Main Title")
         }
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "styled-heading") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            push.block(role: .heading(1), style: Style(fontSize: 24.0, fontWeight: .bold, color: .blue, margin: 16.0))
+            text("Main Title")
+            pop.block
+            """
+        }
     }
 
     @Test
     func `two element _Tuple event trace`() {
         let view = Render._Tuple(TextLeaf("first"), TextLeaf("second"))
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "two-element-tuple") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            text("first")
+            text("second")
+            """
+        }
     }
 
     @Test
     func `Array event trace`() {
         let view = ["alpha", "beta", "gamma"].map { TextLeaf($0) }
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "array-three-items") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            text("alpha")
+            text("beta")
+            text("gamma")
+            """
+        }
     }
 
     @Test
     func `Conditional first branch event trace`() {
         let view: Render.Conditional<TextLeaf, LineBreakLeaf> = .first(TextLeaf("chosen"))
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "conditional-first") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            text("chosen")
+            """
+        }
     }
 
     @Test
     func `Conditional second branch event trace`() {
         let view: Render.Conditional<TextLeaf, LineBreakLeaf> = .second(LineBreakLeaf())
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "conditional-second") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            break(.line)
+            """
+        }
     }
 
     @Test
     func `Optional present event trace`() {
         let view: TextLeaf? = TextLeaf("present")
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "optional-present") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            text("present")
+            """
+        }
     }
 
     @Test
     func `Optional nil event trace`() {
         let view: TextLeaf? = nil
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "optional-nil") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            ""
+        }
     }
 
     @Test
@@ -205,7 +268,20 @@ struct SnapshotTests {
         ctx.text(" and normal")
         ctx.pop.block()
         ctx.pop.block()
-        snapshot(as: makeEventsStrategy(), named: "nested-block-inline") { ctx.events }
+        snapshot(as: makeEventsStrategy()) {
+            ctx.events
+        } matches: {
+            """
+            push.block(role: .section, style: .empty)
+            push.block(role: .paragraph, style: .empty)
+            push.inline(role: .strong, style: .empty)
+            text("bold text")
+            pop.inline
+            text(" and normal")
+            pop.block
+            pop.block
+            """
+        }
     }
 
     @Test
@@ -222,7 +298,23 @@ struct SnapshotTests {
         ctx.text("Third item")
         ctx.pop.item()
         ctx.pop.list()
-        snapshot(as: makeEventsStrategy(), named: "ordered-list") { ctx.events }
+        snapshot(as: makeEventsStrategy()) {
+            ctx.events
+        } matches: {
+            """
+            push.list(kind: .ordered, start: 1)
+            push.item
+            text("First item")
+            pop.item
+            push.item
+            text("Second item")
+            pop.item
+            push.item
+            text("Third item")
+            pop.item
+            pop.list
+            """
+        }
     }
 
     @Test
@@ -242,7 +334,26 @@ struct SnapshotTests {
         ctx.push.block(role: .paragraph, style: .empty)
         ctx.text("Second paragraph.")
         ctx.pop.block()
-        snapshot(as: makeEventsStrategy(), named: "document-structure") { ctx.events }
+        snapshot(as: makeEventsStrategy()) {
+            ctx.events
+        } matches: {
+            """
+            push.block(role: .heading(1), style: .empty)
+            text("Document Title")
+            pop.block
+            push.block(role: .paragraph, style: .empty)
+            text("Introduction with a ")
+            push.link("https://example.com")
+            text("link")
+            pop.link
+            text(".")
+            pop.block
+            break(.thematic)
+            push.block(role: .paragraph, style: .empty)
+            text("Second paragraph.")
+            pop.block
+            """
+        }
     }
 
     @Test
@@ -261,7 +372,24 @@ struct SnapshotTests {
             }
         }
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "mixed-composition") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            push.block(role: .heading(1), style: .empty)
+            text("Title")
+            pop.block
+            push.block(role: .paragraph, style: .empty)
+            text("Body text")
+            pop.block
+            push.block(role: .paragraph, style: .empty)
+            text("a")
+            pop.block
+            push.block(role: .paragraph, style: .empty)
+            text("b")
+            pop.block
+            """
+        }
     }
 
     @Test
@@ -271,7 +399,18 @@ struct SnapshotTests {
             second: BlockWrapper(role: .paragraph) { TextLeaf("text") }
         )
         let events = render(view)
-        snapshot(as: makeEventsStrategy(), named: "pair-with-blocks") { events }
+        snapshot(as: makeEventsStrategy()) {
+            events
+        } matches: {
+            """
+            push.block(role: .blockquote, style: .empty)
+            text("quote")
+            pop.block
+            push.block(role: .paragraph, style: .empty)
+            text("text")
+            pop.block
+            """
+        }
     }
 
     @Test
@@ -280,6 +419,14 @@ struct SnapshotTests {
         ctx.image(source: "banner.png", alt: "Banner image")
         ctx.`break`.page()
         ctx.text("New page content")
-        snapshot(as: makeEventsStrategy(), named: "image-and-pagebreak") { ctx.events }
+        snapshot(as: makeEventsStrategy()) {
+            ctx.events
+        } matches: {
+            """
+            image(source: "banner.png", alt: "Banner image")
+            break(.page)
+            text("New page content")
+            """
+        }
     }
 }

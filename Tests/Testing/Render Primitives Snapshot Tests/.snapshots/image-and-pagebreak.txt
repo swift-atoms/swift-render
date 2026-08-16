@@ -1,3 +1,0 @@
-image(source: "banner.png", alt: "Banner image")
-pageBreak
-text("New page content")

@@ -1,6 +1,0 @@
-push.block(role: .blockquote, style: .empty)
-text("quote")
-pop.block
-push.block(role: .paragraph, style: .empty)
-text("text")
-pop.block
