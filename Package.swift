@@ -1,15 +1,15 @@
-// swift-tools-version: 6.3.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
 let package = Package(
     name: "swift-render-primitives",
     platforms: [
-        .macOS("27"),
-        .iOS("27"),
-        .tvOS("27"),
-        .watchOS("27"),
-        .visionOS("27")
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         // MARK: - Namespace
@@ -27,8 +27,7 @@ let package = Package(
             targets: ["Render Primitives Test Support"]
         ),
     ],
-    dependencies: [
-    ],
+    dependencies: [],
     targets: [
         // MARK: - Namespace
         .target(
@@ -40,13 +39,13 @@ let package = Package(
         .target(
             name: "Render Primitives",
             dependencies: [
-                "Render Primitive",
+                "Render Primitive"
             ]
         ),
         .target(
             name: "Render Primitives Test Support",
             dependencies: [
-                "Render Primitives",
+                "Render Primitives"
             ],
             path: "Tests/Support"
         ),
@@ -57,7 +56,7 @@ let package = Package(
                 "Render Primitives Test Support",
             ],
             path: "Tests/Render Primitives Tests"
-        )
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
