@@ -1,5 +1,5 @@
 extension Render.Semantic {
-    /// Block-level semantic roles.
+
     public enum Block: Sendable {
         case heading(level: Int)
         case paragraph

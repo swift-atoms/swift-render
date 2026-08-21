@@ -1,44 +1,20 @@
 extension Render {
-    /// A rendering destination that receives structured content events.
-    ///
-    /// Contexts are the bridge between format-independent views and format-specific
-    /// output. An HTML context emits tags and bytes; a PDF context emits content
-    /// stream operators. The same view tree renders to any context.
-    ///
-    /// ## Nested Accessor API
-    ///
-    ///     ctx.push.block(role: .paragraph, style: .empty)
-    ///     ctx.text("Hello")
-    ///     ctx.pop.block()
-    ///     ctx.`break`.line()
+
     public struct Context: ~Copyable {
-        // MARK: - Work Stack (Iterative Render)
 
         @usableFromInline var _stack: [Render.Work] = []
 
-        // MARK: - Leaf Operations
-
-        /// Emits a run of literal text.
         public var text: (String) -> Void
 
-        /// Emits an image referenced by source with alternative text.
         public var image: (_ source: String, _ alt: String) -> Void
 
-        // MARK: - Structured Operations
-
-        /// Scope-opening operations that begin structured containers.
         public var push: Render.Push
 
-        /// Scope-closing operations that end structured containers.
         public var pop: Render.Pop
 
-        /// Break operations: line, thematic, and page breaks.
         public var `break`: Render.Break
 
-        /// Speculative rendering: snapshot, tentative render, and rollback.
         public var speculative: Render.Speculative
-
-        // MARK: - Attribute Operations
 
         @usableFromInline var _setAttribute: (_ name: String, _ value: String?) -> Void
         @usableFromInline var _addClass: (String) -> Void
@@ -48,14 +24,8 @@ extension Render {
                 String?
         @usableFromInline var _applyInlineStyle: (Any) -> Bool
 
-        // MARK: - Bulk Operations
-
         @usableFromInline var _spliceActions: ([Render.Action]) -> Void
 
-        /// Creates a context by supplying a closure for each rendering operation.
-        ///
-        /// Each backend (HTML, PDF, recording) provides the closures that turn
-        /// format-independent operations into format-specific output.
         public init(
             text: @escaping (String) -> Void,
             `break`: Render.Break,
@@ -89,28 +59,23 @@ extension Render {
     }
 }
 
-// MARK: - Labeled Convenience API
-
 extension Render.Context {
-    /// Sets an attribute on the current element to the given value, or removes it when `nil`.
+
     @inlinable
     public func set(attribute name: String, _ value: String?) {
         _setAttribute(name, value)
     }
 
-    /// Adds a CSS class name to the current element.
     @inlinable
     public func add(`class` name: String) {
         _addClass(name)
     }
 
-    /// Writes raw, already-encoded bytes directly to the output.
     @inlinable
     public func write(raw bytes: [UInt8]) {
         _writeRaw(bytes)
     }
 
-    /// Registers a style declaration, returning a generated class name when the backend deduplicates it.
     @inlinable
     public func register(
         style declaration: String,
@@ -121,23 +86,19 @@ extension Render.Context {
         _registerStyle(declaration, atRule, selector, pseudo)
     }
 
-    /// Applies a typed inline-style property, returning whether the backend handled it.
     @inlinable
     public func apply(inlineStyle property: Any) -> Bool {
         _applyInlineStyle(property)
     }
 
-    /// Replays a batch of recorded actions into the output in order.
     @inlinable
     public func splice(_ actions: [Render.Action]) {
         _spliceActions(actions)
     }
 }
 
-// MARK: - Interpret
-
 extension Render.Context {
-    /// Applies a single recorded action to this context.
+
     @inlinable
     public mutating func interpret(_ action: Render.Action) {
         switch action {
@@ -192,17 +153,14 @@ extension Render.Context {
         }
     }
 
-    /// Applies a batch of recorded actions to this context, in order.
     @inlinable
     public mutating func interpret(_ actions: [Render.Action]) {
         for action in actions { interpret(action) }
     }
 }
 
-// MARK: - Iterative Render
-
 extension Render.Context {
-    /// Renders a view tree iteratively, avoiding recursive stack overflow.
+
     @inlinable
     public mutating func render<V: Render.View & ~Copyable>(_ view: borrowing V) {
         _stack.reserveCapacity(64)
@@ -211,14 +169,6 @@ extension Render.Context {
         _drain(above: 0)
     }
 
-    /// Pops and dispatches work above `marker`, in LIFO order, until the
-    /// stack returns to that depth.
-    ///
-    /// This is the same step the top-level `render(_:)` drain loop performs;
-    /// it is also used by composition types (``Render/Pair``) that need one
-    /// child's entire deferred subtree to fully complete — synchronous
-    /// dispatch *and* whatever it deferred — before the next child begins,
-    /// without needing ownership of that child beyond its own `_render` call.
     @usableFromInline
     mutating func _drain(above marker: Int) {
         while _stack.count > marker {
@@ -240,7 +190,6 @@ extension Render.Context {
         }
     }
 
-    /// Destroys any orphaned render allocations remaining on the stack.
     @usableFromInline
     mutating func _cleanupStack() {
         for work in _stack {
@@ -251,7 +200,6 @@ extension Render.Context {
         _stack.removeAll(keepingCapacity: true)
     }
 
-    /// Opens a push/pop bracket scope with deferred close.
     @inlinable
     public mutating func open(
         push: Render.Action.Push,

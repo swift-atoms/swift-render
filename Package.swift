@@ -12,12 +12,12 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        // MARK: - Namespace
+
         .library(
             name: "Render Primitive",
             targets: ["Render Primitive"]
         ),
-        // MARK: - Umbrella
+
         .library(
             name: "Render Primitives",
             targets: ["Render Primitives"]
@@ -29,13 +29,12 @@ let package = Package(
     ],
     dependencies: [],
     targets: [
-        // MARK: - Namespace
+
         .target(
             name: "Render Primitive",
             dependencies: []
         ),
 
-        // MARK: - Umbrella
         .target(
             name: "Render Primitives",
             dependencies: [

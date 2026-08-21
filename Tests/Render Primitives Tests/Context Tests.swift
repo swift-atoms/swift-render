@@ -10,8 +10,6 @@ struct ContextTests {
     @Suite struct Interpret {}
 }
 
-// MARK: - Unit
-
 extension ContextTests.Unit {
     @Test
     func `text appends text event`() {
@@ -222,8 +220,6 @@ extension ContextTests.Unit {
     }
 }
 
-// MARK: - EdgeCase
-
 extension ContextTests.EdgeCase {
     @Test
     func `empty string text event is preserved`() {
@@ -284,8 +280,6 @@ extension ContextTests.EdgeCase {
         )
     }
 }
-
-// MARK: - Integration
 
 extension ContextTests.Integration {
     @Test
@@ -392,8 +386,6 @@ extension ContextTests.Integration {
         )
     }
 }
-
-// MARK: - Interpret
 
 extension ContextTests.Interpret {
     @Test

@@ -1,8 +1,5 @@
 extension Render {
-    /// A reified rendering operation that a `Render.Context` can interpret.
-    ///
-    /// Actions are the value form of the context's imperative API, letting a
-    /// view record a sequence of operations and replay or splice them later.
+
     public enum Action: Sendable {
         case push(Push)
         case pop(Pop)

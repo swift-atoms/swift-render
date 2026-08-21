@@ -2,10 +2,6 @@ import Render_Primitives
 import Render_Primitives_Test_Support
 import Testing
 
-// MARK: - Event Formatting
-
-/// Converts a sequence of RecordingContext events to a human-readable
-/// string suitable for line-based snapshot diffing.
 private func formatEvents(_ events: [RecordingContext.Event]) -> String {
     events.map { event -> String in
         switch event {
@@ -103,16 +99,12 @@ private func formatStyle(_ style: Render.Style) -> String {
     return "Style(\(parts.joined(separator: ", ")))"
 }
 
-// MARK: - Strategy Factory
-
 private func makeEventsStrategy() -> Test.Snapshot.Strategy<[RecordingContext.Event], String> {
     Test.Snapshot.Strategy<String, String>.lines
         .pullback { (events: [RecordingContext.Event]) in
             formatEvents(events)
         }
 }
-
-// MARK: - Tests
 
 @Suite(.serialized)
 struct SnapshotTests {

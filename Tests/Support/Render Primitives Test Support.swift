@@ -1,10 +1,5 @@
 import Render_Primitives
 
-// MARK: - Retroactive Equatable (test only)
-//
-// Simple enums (Weight, Color, Inline, List) auto-synthesize Equatable.
-// Only Style (struct) and Block (enum with associated values) need manual conformance.
-
 extension Render.Style.Font: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.size == rhs.size && lhs.weight == rhs.weight
@@ -34,8 +29,6 @@ extension Render.Semantic.Block: Equatable {
         }
     }
 }
-
-// MARK: - Render.Recording
 
 extension Render {
     public enum Recording {
@@ -121,8 +114,6 @@ extension Render.Context {
     }
 }
 
-// MARK: - Test Leaf Views
-
 public struct TextLeaf: Render.View, Sendable {
     public let value: String
 
@@ -182,8 +173,6 @@ public struct BlockWrapper<Content: Render.View>: Render.View {
         Content._render(view.content, context: &context)
     }
 }
-
-// MARK: - Render Helper
 
 public func render<V: Render.View & ~Copyable>(
     _ view: borrowing V

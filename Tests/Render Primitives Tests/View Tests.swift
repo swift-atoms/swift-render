@@ -9,8 +9,6 @@ struct ViewTests {
     @Suite struct Integration {}
 }
 
-// MARK: - Unit
-
 extension ViewTests.Unit {
     @Test
     func `leaf view emits text event through _render`() {
@@ -61,8 +59,6 @@ extension ViewTests.Unit {
     }
 }
 
-// MARK: - EdgeCase
-
 extension ViewTests.EdgeCase {
     @Test
     func `empty string text leaf produces text event with empty string`() {
@@ -88,8 +84,6 @@ extension ViewTests.EdgeCase {
         }
     }
 }
-
-// MARK: - Integration
 
 extension ViewTests.Integration {
     @Test

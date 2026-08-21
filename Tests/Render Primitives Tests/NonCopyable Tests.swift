@@ -2,8 +2,6 @@ import Render_Primitives
 import Render_Primitives_Test_Support
 import Testing
 
-// MARK: - NonCopyable Test Leaf
-
 private struct NonCopyableLeaf: Render.View, ~Copyable {
     let tag: String
 
@@ -19,8 +17,6 @@ private struct NonCopyableLeaf: Render.View, ~Copyable {
         context.text(view.tag)
     }
 }
-
-// MARK: - Tests
 
 @Suite("NonCopyable")
 struct NonCopyableTests {
@@ -88,8 +84,6 @@ extension NonCopyableTests.Unit {
         #expect(events == [.text("inner1"), .text("inner2"), .text("outer")])
     }
 }
-
-// MARK: - EdgeCase
 
 extension NonCopyableTests.EdgeCase {
     @Test

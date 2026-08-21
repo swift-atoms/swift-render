@@ -9,8 +9,6 @@ struct BuilderTests {
     @Suite struct EdgeCase {}
 }
 
-// MARK: - Unit
-
 extension BuilderTests.Unit {
     @Test
     func `buildBlock passes through single element`() {
@@ -86,8 +84,6 @@ extension BuilderTests.Unit {
     }
 }
 
-// MARK: - EdgeCase
-
 extension BuilderTests.EdgeCase {
     @Test
     func `buildBlock with single Empty produces no events`() {
@@ -110,8 +106,6 @@ extension BuilderTests.EdgeCase {
         #expect(events.isEmpty)
     }
 }
-
-// MARK: - Integration
 
 extension BuilderTests.Integration {
     @Test

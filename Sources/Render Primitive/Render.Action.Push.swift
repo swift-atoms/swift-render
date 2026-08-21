@@ -1,5 +1,5 @@
 extension Render.Action {
-    /// A reified scope-opening operation that begins a structured container.
+
     public enum Push: Sendable {
         case block(role: Render.Semantic.Block?, style: Render.Style)
         case inline(role: Render.Semantic.Inline?, style: Render.Style)

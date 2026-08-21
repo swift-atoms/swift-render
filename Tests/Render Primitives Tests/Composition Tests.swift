@@ -9,8 +9,6 @@ struct CompositionTests {
     @Suite struct EdgeCase {}
 }
 
-// MARK: - Unit: _Tuple
-
 extension CompositionTests.Unit {
     @Test
     func `_Tuple with two elements renders in order`() {
@@ -35,8 +33,6 @@ extension CompositionTests.Unit {
     }
 }
 
-// MARK: - Unit: Conditional
-
 extension CompositionTests.Unit {
     @Test
     func `Conditional first case renders first`() {
@@ -53,8 +49,6 @@ extension CompositionTests.Unit {
     }
 }
 
-// MARK: - Unit: Pair
-
 extension CompositionTests.Unit {
     @Test
     func `Pair renders first then second`() {
@@ -66,8 +60,6 @@ extension CompositionTests.Unit {
         #expect(events == [.text("one"), .text("two")])
     }
 }
-
-// MARK: - Unit: Optional
 
 extension CompositionTests.Unit {
     @Test
@@ -85,8 +77,6 @@ extension CompositionTests.Unit {
     }
 }
 
-// MARK: - Unit: Array
-
 extension CompositionTests.Unit {
     @Test
     func `Array renders all elements in order`() {
@@ -103,8 +93,6 @@ extension CompositionTests.Unit {
     }
 }
 
-// MARK: - Unit: Array
-
 extension CompositionTests.Unit {
     @Test
     func `Array renders all elements from mapped collection`() {
@@ -113,8 +101,6 @@ extension CompositionTests.Unit {
         #expect(events == [.text("x"), .text("y"), .text("z")])
     }
 }
-
-// MARK: - Unit: Group
 
 extension CompositionTests.Unit {
     @Test
@@ -127,8 +113,6 @@ extension CompositionTests.Unit {
     }
 }
 
-// MARK: - Unit: Empty
-
 extension CompositionTests.Unit {
     @Test
     func `Empty produces no events`() {
@@ -136,8 +120,6 @@ extension CompositionTests.Unit {
         #expect(events.isEmpty)
     }
 }
-
-// MARK: - EdgeCase
 
 extension CompositionTests.EdgeCase {
     @Test
@@ -176,10 +158,6 @@ extension CompositionTests.EdgeCase {
         #expect(events == [.text("bottom")])
     }
 
-    // MARK: F-001: Pair with a bracketed (multi-item-deferring) child in
-    // each position, in isolation — narrows down which position the
-    // old synchronous-dispatch/reverse hybrid mis-ordered.
-
     @Test
     func `Pair with bracketed child in first position closes before second renders`() {
         let view = Render.Pair(
@@ -216,10 +194,7 @@ extension CompositionTests.EdgeCase {
 
     @Test
     func `nested Pair with bracketed grandchildren preserves sibling structure`() {
-        // A Pair whose first child is itself a Pair of two bracketed views:
-        // exercises the double-reversal failure mode directly, since the
-        // inner Pair's own (now correctly ordered) two-item block must not
-        // be re-scrambled by the outer Pair.
+
         let view = Render.Pair(
             first: Render.Pair(
                 first: BlockWrapper(role: .heading(level: 1)) { TextLeaf("title") },
@@ -243,8 +218,6 @@ extension CompositionTests.EdgeCase {
         )
     }
 }
-
-// MARK: - Integration
 
 extension CompositionTests.Integration {
     @Test
@@ -281,15 +254,7 @@ extension CompositionTests.Integration {
 
     @Test
     func `Pair with block wrappers preserves structure`() {
-        // F-001 regression: Pair._render used to dispatch both children
-        // synchronously and then reverse the *combined* range of whatever
-        // they deferred, which is only correct when each child defers
-        // exactly one item. A BlockWrapper defers its close (`popBlock`)
-        // while opening synchronously, so the old algorithm interleaved
-        // both opens before either close, producing
-        // [pushBlock, text, pushBlock, text, popBlock, popBlock] (blockquote
-        // and paragraph rendered as nested, not sibling, blocks) instead of
-        // the correct sibling order asserted below.
+
         let view = Render.Pair(
             first: BlockWrapper(role: .paragraph) { TextLeaf("p1") },
             second: BlockWrapper(role: .paragraph) { TextLeaf("p2") }

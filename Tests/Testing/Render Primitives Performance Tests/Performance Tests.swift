@@ -5,8 +5,6 @@ import Testing
 @Suite(.serialized)
 struct PerformanceTests {
 
-    // MARK: - Builder Throughput
-
     @Test(.timed(iterations: 50, warmup: 5))
     func `building flat _Tuple with ten elements`() {
         for _ in 0..<1_000 {
@@ -37,8 +35,6 @@ struct PerformanceTests {
             }
         }
     }
-
-    // MARK: - Render Throughput
 
     @Test(.timed(iterations: 50, warmup: 5))
     func `rendering flat _Tuple ten elements`() {
@@ -106,8 +102,6 @@ struct PerformanceTests {
         }
     }
 
-    // MARK: - Context Throughput
-
     @Test(.timed(iterations: 50, warmup: 5))
     func `context push pop block cycles`() {
         let state = Render.Recording.State()
@@ -133,8 +127,6 @@ struct PerformanceTests {
             ctx.pop.block()
         }
     }
-
-    // MARK: - Composition Throughput
 
     @Test(.timed(iterations: 30, warmup: 3))
     func `rendering mixed composition tree`() {

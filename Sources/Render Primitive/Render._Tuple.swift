@@ -1,35 +1,23 @@
 extension Render {
-    /// Flat variadic composition produced by `Render.Builder.buildBlock`.
-    ///
-    /// Each element is rendered in order. The flat structure avoids the
-    /// O(N) nesting depth that causes stack overflows with binary composition.
-    ///
-    /// The type itself is unconstrained — domain packages add protocol
-    /// conformances via conditional extensions. `Render.View` conformance
-    /// is provided when all elements are `Render.View`.
+
     public struct _Tuple<each Content> {
-        /// The packed tuple of composed elements.
+
         public let content: (repeat each Content)
 
-        /// Creates a tuple from a variadic list of elements.
         public init(_ content: repeat each Content) {
             self.content = (repeat each content)
         }
     }
 }
 
-// MARK: - Render.View
-
 extension Render._Tuple: Render.View where repeat each Content: Render.View {
-    /// The body type of this leaf conformance, which never produces nested content.
+
     public typealias Body = Never
 
-    /// Unreachable: each element is dispatched directly through `_render`.
     public var body: Never {
         fatalError("Render._Tuple has no body; rendering is performed by _render")
     }
 
-    /// Renders each packed element in order.
     public static func _render(
         _ view: borrowing Self,
         context: inout Render.Context
