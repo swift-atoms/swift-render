@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-render-primitives",
+    name: "swift-render",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -19,12 +19,12 @@ let package = Package(
         ),
 
         .library(
-            name: "Render Primitives",
-            targets: ["Render Primitives"]
+            name: "Render",
+            targets: ["Render"]
         ),
         .library(
-            name: "Render Primitives Test Support",
-            targets: ["Render Primitives Test Support"]
+            name: "Render Test Support",
+            targets: ["Render Test Support"]
         ),
     ],
     dependencies: [],
@@ -36,25 +36,25 @@ let package = Package(
         ),
 
         .target(
-            name: "Render Primitives",
+            name: "Render",
             dependencies: [
                 "Render Primitive"
             ]
         ),
         .target(
-            name: "Render Primitives Test Support",
+            name: "Render Test Support",
             dependencies: [
-                "Render Primitives"
+                "Render"
             ],
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Render Primitives Tests",
+            name: "Render Tests",
             dependencies: [
-                "Render Primitives",
-                "Render Primitives Test Support",
+                "Render",
+                "Render Test Support",
             ],
-            path: "Tests/Render Primitives Tests"
+            path: "Tests/Render Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
