@@ -1,5 +1,4 @@
 import Render
-import Render_Test_Support
 import Testing
 
 private final class MutableBox {
