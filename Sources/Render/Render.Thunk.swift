@@ -1,15 +1,15 @@
 extension Render {
 
     @usableFromInline
-    struct Thunk {
+    package struct Thunk {
         @usableFromInline
-        let dispatch: (UnsafeMutableRawPointer, inout Render.Context) -> Void
+        package let dispatch: (UnsafeMutableRawPointer, inout Render.Context) -> Void
 
         @usableFromInline
-        let destroy: (UnsafeMutableRawPointer) -> Void
+        package let destroy: (UnsafeMutableRawPointer) -> Void
 
         @inlinable
-        init<Body: Render.View & ~Copyable>(_: Body.Type) {
+        package init<Body: Render.View & ~Copyable>(_: Body.Type) {
             unsafe self.dispatch = { pointer, context in
                 Body._render(
                     unsafe pointer.assumingMemoryBound(to: Body.self).pointee,
@@ -23,7 +23,7 @@ extension Render {
         }
 
         @inlinable
-        init<V: Render.View & Copyable>(view _: V.Type) where V.Body: Render.View {
+        package init<V: Render.View & Copyable>(view _: V.Type) where V.Body: Render.View {
             unsafe self.dispatch = { pointer, context in
                 let view = unsafe pointer.assumingMemoryBound(to: V.self).pointee
                 V.Body._render(view.body, context: &context)

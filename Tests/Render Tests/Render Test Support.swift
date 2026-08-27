@@ -1,4 +1,4 @@
-import Render
+public import Render
 
 extension Render.Style.Font: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {

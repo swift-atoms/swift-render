@@ -44,7 +44,10 @@ let package = Package(
         ),
         .testTarget(
             name: "Render Tests",
-            dependencies: ["Render"],
+            dependencies: [
+                "Render",
+                "Render Standard Library Integration",
+            ],
             path: "Tests/Render Tests"
         ),
     ],

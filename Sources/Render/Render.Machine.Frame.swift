@@ -1,7 +1,7 @@
 extension Render.Machine {
 
     @usableFromInline
-    enum Frame {
+    package enum Frame {
 
         case closeScope(Render.Action)
     }

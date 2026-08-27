@@ -2,7 +2,7 @@ extension Render {
 
     public struct Context: ~Copyable {
 
-        @usableFromInline var _stack: [Render.Work] = []
+        @usableFromInline package var _stack: [Render.Work] = []
 
         public var text: (String) -> Void
 
@@ -210,10 +210,10 @@ extension Render.Context {
     }
 
     @usableFromInline
-    var _stackDepth: Int { _stack.count }
+    package var _stackDepth: Int { _stack.count }
 
     @usableFromInline
-    mutating func _reverseAbove(_ marker: Int) {
+    package mutating func _reverseAbove(_ marker: Int) {
         _stack[marker...].reverse()
     }
 }
