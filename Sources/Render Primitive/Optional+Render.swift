@@ -1,5 +1,3 @@
-public import Render
-
 extension Optional: Render.View where Wrapped: Render.View {
 
     public typealias Body = Never

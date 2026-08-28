@@ -1,11 +1,11 @@
 import Render
-import Render_Standard_Library_Integration
+import Render_Test_Support
 import Testing
 
 @Suite(.serialized)
 struct PerformanceTests {
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `building flat _Tuple with ten elements`() {
         for _ in 0..<1_000 {
             let _ = Render.Builder.buildBlock(
@@ -23,7 +23,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 30, warmup: 3))
     func `building view tree via builder closure`() {
         for _ in 0..<1_000 {
             let _ = buildContent {
@@ -36,7 +36,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `rendering flat _Tuple ten elements`() {
         let view = Render._Tuple(
             TextLeaf("1"),
@@ -55,7 +55,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `rendering Array with 100 elements`() {
         let view = (0..<100).map { TextLeaf("item-\($0)") }
         for _ in 0..<500 {
@@ -63,7 +63,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 30, warmup: 3))
     func `rendering Array with 1000 elements`() {
         let view = (0..<1_000).map { TextLeaf("item-\($0)") }
         for _ in 0..<100 {
@@ -71,7 +71,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `rendering Conditional first branch`() {
         let view: Render.Conditional<TextLeaf, TextLeaf> = .first(TextLeaf("chosen"))
         for _ in 0..<10_000 {
@@ -79,7 +79,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `rendering nested Pair chain`() {
         let view = Render.Pair(
             first: Render.Pair(
@@ -102,7 +102,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `context push pop block cycles`() {
         let state = Render.Recording.State()
         var ctx = Render.Context.recording(into: state)
@@ -113,7 +113,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `context nested block and inline structure`() {
         let state = Render.Recording.State()
         var ctx = Render.Context.recording(into: state)
@@ -128,7 +128,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 30, warmup: 3))
     func `rendering mixed composition tree`() {
         let view = buildContent {
             BlockWrapper(role: .heading(level: 1)) {
@@ -151,7 +151,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 30, warmup: 3))
     func `rendering Group wrapping builder content`() {
         for _ in 0..<5_000 {
             let view = Render.Group {
@@ -163,7 +163,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 50, warmup: 5))
     func `rendering Empty views in large tuple`() {
         let view = Render._Tuple(
             Render.Empty(),
@@ -182,7 +182,7 @@ struct PerformanceTests {
         }
     }
 
-    @Test
+    @Test(.timed(iterations: 30, warmup: 3))
     func `rendering Optional present vs absent`() {
         let present: TextLeaf? = TextLeaf("here")
         let absent: TextLeaf? = nil

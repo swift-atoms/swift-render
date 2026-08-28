@@ -1,4 +1,5 @@
 import Render
+import Render_Test_Support
 import Testing
 
 @Suite("Render.View")

@@ -1,5 +1,3 @@
-public import Render
-
 extension Array: Render.View where Element: Render.View {
 
     public typealias Body = Never

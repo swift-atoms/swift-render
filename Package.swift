@@ -12,41 +12,47 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
+
+        .library(
+            name: "Render Primitive",
+            targets: ["Render Primitive"]
+        ),
+
         .library(
             name: "Render",
             targets: ["Render"]
         ),
         .library(
-            name: "Render Standard Library Integration",
-            targets: ["Render Standard Library Integration"]
-        ),
-        .library(
-            name: "Render Apple Foundation Integration",
-            targets: ["Render Apple Foundation Integration"]
+            name: "Render Test Support",
+            targets: ["Render Test Support"]
         ),
     ],
     dependencies: [],
     targets: [
+
         .target(
-            name: "Render",
+            name: "Render Primitive",
             dependencies: []
         ),
+
         .target(
-            name: "Render Standard Library Integration",
-            dependencies: ["Render"]
+            name: "Render",
+            dependencies: [
+                "Render Primitive"
+            ]
         ),
         .target(
-            name: "Render Apple Foundation Integration",
+            name: "Render Test Support",
             dependencies: [
-                "Render",
-                "Render Standard Library Integration",
-            ]
+                "Render"
+            ],
+            path: "Tests/Support"
         ),
         .testTarget(
             name: "Render Tests",
             dependencies: [
                 "Render",
-                "Render Standard Library Integration",
+                "Render Test Support",
             ],
             path: "Tests/Render Tests"
         ),
