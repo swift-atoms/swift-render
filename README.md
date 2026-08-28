@@ -63,7 +63,7 @@ Composition is declarative through `Render.Builder` (`buildBlock`, `buildOptiona
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-render.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-render.git", branch: "main")
 ]
 ```
 
@@ -82,13 +82,12 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 ## Architecture
 
-Three library products. No dependencies.
+Two library products. No dependencies.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Render Primitive` | `Sources/Render Primitive/` | The `Render` namespace: `Render.View`, the witness-struct `Render.Context` with its `push` / `pop` / `break` / `speculative` operations, the `Render.Builder` result builder, the composition types `Render._Tuple`, `Render.Pair`, `Render.Conditional`, `Render.Group`, `Render.Empty`, `Render.Indirect`, and the value vocabulary `Render.Action`, `Render.Semantic`, `Render.Style`. |
-| `Render` | `Sources/Render/` | Umbrella that re-exports `Render Primitive`. |
-| `Render Test Support` | `Tests/Support/` | A recording context and leaf views for testing consumers' rendering code. |
+| `Render` | `Sources/Render/` | The `Render` namespace: `Render.View`, the witness-struct `Render.Context` with its `push` / `pop` / `break` / `speculative` operations, the `Render.Builder` result builder, the composition types `Render._Tuple`, `Render.Pair`, `Render.Conditional`, `Render.Group`, `Render.Empty`, `Render.Indirect`, and the value vocabulary `Render.Action`, `Render.Semantic`, `Render.Style`. |
+| `Render Test Support` | `Tests/Render Test Support/` | A recording context and leaf views for testing consumers' rendering code. |
 
 Foundation-free.
 

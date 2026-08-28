@@ -14,11 +14,6 @@ let package = Package(
     products: [
 
         .library(
-            name: "Render Primitive",
-            targets: ["Render Primitive"]
-        ),
-
-        .library(
             name: "Render",
             targets: ["Render"]
         ),
@@ -31,30 +26,37 @@ let package = Package(
     targets: [
 
         .target(
-            name: "Render Primitive",
-            dependencies: []
-        ),
-
-        .target(
             name: "Render",
-            dependencies: [
-                "Render Primitive"
-            ]
+            dependencies: []
         ),
         .target(
             name: "Render Test Support",
             dependencies: [
-                "Render"
+                .target(name: "Render")
             ],
-            path: "Tests/Support"
+            path: "Tests/Render Test Support"
         ),
         .testTarget(
             name: "Render Tests",
             dependencies: [
-                "Render",
-                "Render Test Support",
+                .target(name: "Render"),
+                .target(name: "Render Test Support"),
             ],
             path: "Tests/Render Tests"
+        ),
+        .testTarget(
+            name: "Render Snapshot Tests",
+            dependencies: [
+                .target(name: "Render"),
+                .target(name: "Render Test Support"),
+            ]
+        ),
+        .testTarget(
+            name: "Render Performance Tests",
+            dependencies: [
+                .target(name: "Render"),
+                .target(name: "Render Test Support"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

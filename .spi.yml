@@ -3,4 +3,4 @@ builder:
   configs:
   - documentation_targets:
     - Render Primitive
-    - Render
+    - Render Primitives
