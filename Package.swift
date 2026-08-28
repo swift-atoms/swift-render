@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-render-primitives",
+    name: "swift-render",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -14,47 +14,49 @@ let package = Package(
     products: [
 
         .library(
-            name: "Render Primitive",
-            targets: ["Render Primitive"]
-        ),
-
-        .library(
-            name: "Render Primitives",
-            targets: ["Render Primitives"]
+            name: "Render",
+            targets: ["Render"]
         ),
         .library(
-            name: "Render Primitives Test Support",
-            targets: ["Render Primitives Test Support"]
+            name: "Render Test Support",
+            targets: ["Render Test Support"]
         ),
     ],
     dependencies: [],
     targets: [
 
         .target(
-            name: "Render Primitive",
+            name: "Render",
             dependencies: []
         ),
-
         .target(
-            name: "Render Primitives",
+            name: "Render Test Support",
             dependencies: [
-                "Render Primitive"
-            ]
-        ),
-        .target(
-            name: "Render Primitives Test Support",
-            dependencies: [
-                "Render Primitives"
+                .target(name: "Render")
             ],
-            path: "Tests/Support"
+            path: "Tests/Render Test Support"
         ),
         .testTarget(
-            name: "Render Primitives Tests",
+            name: "Render Tests",
             dependencies: [
-                "Render Primitives",
-                "Render Primitives Test Support",
+                .target(name: "Render"),
+                .target(name: "Render Test Support"),
             ],
-            path: "Tests/Render Primitives Tests"
+            path: "Tests/Render Tests"
+        ),
+        .testTarget(
+            name: "Render Snapshot Tests",
+            dependencies: [
+                .target(name: "Render"),
+                .target(name: "Render Test Support"),
+            ]
+        ),
+        .testTarget(
+            name: "Render Performance Tests",
+            dependencies: [
+                .target(name: "Render"),
+                .target(name: "Render Test Support"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

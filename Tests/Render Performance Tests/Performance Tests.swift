@@ -1,5 +1,5 @@
-import Render_Primitives
-import Render_Primitives_Test_Support
+import Render
+import Render_Test_Support
 import Testing
 
 @Suite(.serialized)

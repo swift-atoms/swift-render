@@ -1,4 +1,4 @@
-# Render Primitives
+# Render
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -11,7 +11,7 @@ Format-independent rendering primitives for Swift — a `Render` namespace of co
 `Render.View` describes *what* to render; `Render.Context` describes *where* it goes. A view tree is format-independent — the same tree renders to HTML, PDF, plain text, or an in-memory event log. The context is a witness struct built from closures, so a backend is just a set of handlers; there is no protocol to conform to and no subclass to write.
 
 ```swift
-import Render_Primitives
+import Render
 
 // A leaf view that emits a single run of text.
 struct TextRun: Render.View, Sendable {
@@ -63,7 +63,7 @@ Composition is declarative through `Render.Builder` (`buildBlock`, `buildOptiona
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-render-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-render.git", branch: "main")
 ]
 ```
 
@@ -71,7 +71,7 @@ dependencies: [
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Render Primitives", package: "swift-render-primitives"),
+        .product(name: "Render", package: "swift-render"),
     ]
 )
 ```
@@ -82,13 +82,12 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 ## Architecture
 
-Three library products. No dependencies.
+Two library products. No dependencies.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Render Primitive` | `Sources/Render Primitive/` | The `Render` namespace: `Render.View`, the witness-struct `Render.Context` with its `push` / `pop` / `break` / `speculative` operations, the `Render.Builder` result builder, the composition types `Render._Tuple`, `Render.Pair`, `Render.Conditional`, `Render.Group`, `Render.Empty`, `Render.Indirect`, and the value vocabulary `Render.Action`, `Render.Semantic`, `Render.Style`. |
-| `Render Primitives` | `Sources/Render Primitives/` | Umbrella that re-exports `Render Primitive`. |
-| `Render Primitives Test Support` | `Tests/Support/` | A recording context and leaf views for testing consumers' rendering code. |
+| `Render` | `Sources/Render/` | The `Render` namespace: `Render.View`, the witness-struct `Render.Context` with its `push` / `pop` / `break` / `speculative` operations, the `Render.Builder` result builder, the composition types `Render._Tuple`, `Render.Pair`, `Render.Conditional`, `Render.Group`, `Render.Empty`, `Render.Indirect`, and the value vocabulary `Render.Action`, `Render.Semantic`, `Render.Style`. |
+| `Render Test Support` | `Tests/Render Test Support/` | A recording context and leaf views for testing consumers' rendering code. |
 
 Foundation-free.
 
