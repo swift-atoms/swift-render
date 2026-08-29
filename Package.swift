@@ -44,20 +44,6 @@ let package = Package(
             ],
             path: "Tests/Render Tests"
         ),
-        .testTarget(
-            name: "Render Snapshot Tests",
-            dependencies: [
-                .target(name: "Render"),
-                .target(name: "Render Test Support"),
-            ]
-        ),
-        .testTarget(
-            name: "Render Performance Tests",
-            dependencies: [
-                .target(name: "Render"),
-                .target(name: "Render Test Support"),
-            ]
-        ),
     ],
     swiftLanguageModes: [.v6]
 )
